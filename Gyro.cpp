@@ -68,7 +68,6 @@ void Gyro::_GetAccelerometerData()
 	//Se calculan los angulos Y, X respectivamente.
 	Acc[1] = atan(-1 * (AcX / A_R) / sqrt(pow((AcY / A_R), 2) + pow((AcZ / A_R), 2)))*RAD_TO_DEG;
 	Acc[0] = atan((AcY / A_R) / sqrt(pow((AcX / A_R), 2) + pow((AcZ / A_R), 2)))*RAD_TO_DEG;
-
 }
 
 void Gyro::_GetGyroscopeData()
