@@ -2,10 +2,10 @@
 #include "Gyro.h"
 
 
-Motor _motor_1(9);
-Motor _motor_2(10);
-Motor _motor_3(3);
-Motor _motor_4(11);
+Motor _motor_1(9);  // Y -
+Motor _motor_2(10); // X -
+Motor _motor_3(3);  // X +
+Motor _motor_4(11); // Y +
 
 Gyro _gyro;
 
@@ -52,92 +52,91 @@ void loop()
 
 void Estabilizar(int _GyroX, int _GyroY)
 {
+	/*
+	_motor_1(9)		--> Y -
+	_motor_2(10)	--> X -
+	_motor_3(3)		--> X +
+	_motor_4(11)	--> Y +
+	*/
 	if (_GyroX < 0)
 	{
-		/* Inclinacion negativa en el Eje X
+		/* Inclinacion negativa en el Eje X */
 
-		Verificamos velocidad actual de los motores en el eje X
-
-		*/
-		if ((_motor_3.CurrentThrottle == _motor_3.MaximumThrottle) && (_motor_2.CurrentThrottle == _motor_2.MaximumThrottle))
+		/* Verifico velocidad actual en el motor X - */
+		if ((_motor_2.CurrentThrottle == _motor_2.MaximumThrottle)) 
 		{
-			// Si (el / los) motores estan en su velocidad maxima, disminuimos velocidad del motor en X + (PWM 3) (Motor 3)
+			// Motor X - esta a maxima velocidad
+			// descacelero motor X+ para compensar
 			_motor_3.Acelera(_GyroX);
 		}
 		else
 		{
-			// Si (el / los) motores no estan en velocidad maxima, aumentamos velocidad del motor en X - (PWM 10) (Motor 2)
+			// Motor X - NO esta a maxima velocidad
+			// Acelero motor X- para compensar
 			_motor_2.Acelera(_GyroX * -1);
 		}
 	}
 	else if (_GyroX > 0)
 	{
-		/* Inclinacion positiva en el Eje X
+		/* Inclinacion positiva en el Eje X */
 
-		Verificamos velocidad actual de los motores en el eje X
-
-		*/
-		if ((_motor_3.CurrentThrottle == _motor_3.MaximumThrottle) && (_motor_2.CurrentThrottle == _motor_2.MaximumThrottle))
+		/* Verifico velocidad actual en el motor en X+ */
+		if ((_motor_3.CurrentThrottle == _motor_3.MaximumThrottle))
 		{
-			// Si (el / los) motores estan en su velocidad maxima, disminuimos velocidad del motor en X + (PWM 10) (Motor 2)
+			/* Motor X + esta a maxima velocidad */
+
+			/* Desacelero X- para compensar */
 			_motor_2.Acelera(_GyroX * -1);
 		}
 		else
 		{
-			// Si (el / los) motores no estan en velocidad maxima, aumentamos velocidad del motor en X - (PWM 3) (Motor 3)
+			/* Motor X + NO esta a maxima velocidad */
+
+			/*¨Acelero X + para compensar */
 			_motor_3.Acelera(_GyroX);
 		}
-
-		//		Serial.print("Ajuste en X: "); Serial.println(_GyroX);
 	}
-
 
 	if (_GyroY < 0)
 	{
-		/* Inclinacion negativa en el Eje Y
+		/* Inclonacion Negativa en el eje Y */
 
-		Verificamos velocidad actual de los motores en el eje Y
-
-		*/
-		if ((_motor_4.CurrentThrottle == _motor_4.MaximumThrottle) && (_motor_1.CurrentThrottle == _motor_1.MaximumThrottle))
+		/* Verifico la velocidad actual del motor en Y -*/
+		if ((_motor_1.CurrentThrottle == _motor_1.MaximumThrottle))
 		{
-			// Si (el / los) motores estan en su velocidad maxima, disminuimos velocidad del motor en Y + (PWM 11) (Motor 4)
+			/* El Motor en Y - esta a maxima velocidad */
+			/* Desacelero el motor en Y + */
 			_motor_4.Acelera(_GyroY);
 		}
 		else
 		{
-			// Si (el / los) motores no estan en velocidad maxima, aumentamos velocidad del motor en Y - (PWM 9) (Motor 1)
+			/* El Motor en Y - NO esta a maxima velocidad */
+			/* Acelero el motor en Y -*/
 			_motor_1.Acelera(_GyroY * -1);
 		}
 	}
-	else if (_GyroY > 0)
+	else
 	{
-		/* Inclinacion positiva en el Eje X
+		/* Inclinacion Positiva en eje Y */
 
-		Verificamos velocidad actual de los motores en el eje X
-
-		*/
-		if ((_motor_3.CurrentThrottle == _motor_3.MaximumThrottle) && (_motor_2.CurrentThrottle == _motor_2.MaximumThrottle))
+		/* Verifico la velocidad del motor en Y + */
+		if ((_motor_4.CurrentThrottle == _motor_4.MaximumThrottle))
 		{
-			// Si (el / los) motores estan en su velocidad maxima, disminuimos velocidad del motor en Y - (PWM 9) (Motor 1)
+			/* El motor en Y + esta a maxima velocidad */
+			/* Desacelero el motor en Y - */
 			_motor_1.Acelera(_GyroY * -1);
 		}
 		else
 		{
-			// Si (el / los) motores no estan en velocidad maxima, aumentamos velocidad del motor en X - (PWM 11) (Motor 4)
+			/* El motor en Y + NO esta a maxima velocidad */
+			/* Acelero el motoro en Y + */
 			_motor_4.Acelera(_GyroY);
 		}
-//		Serial.print("Ajuste en Y: "); Serial.println(_GyroY);
 	}
 
-	Serial.print(_motor_1.CurrentThrottle);
-	Serial.print(",");
-	Serial.print(_motor_2.CurrentThrottle);
-	Serial.print(",");
-	Serial.print(_motor_3.CurrentThrottle);
-	Serial.print(",");
-	Serial.print(_motor_4.CurrentThrottle);
-	Serial.print(",");
-	Serial.print(_GyroY);
-	Serial.print(",");	Serial.println(_GyroX);
+	Serial.print("X:"); Serial.print(_GyroX); Serial.print(", Y:");	Serial.print(_GyroY); 
+	Serial.print(" | Motor X- :"); Serial.print(_motor_2.CurrentThrottle);
+	Serial.print(" | Motor X+ :"); Serial.print(_motor_3.CurrentThrottle);
+	Serial.print(" | Motor Y- :"); Serial.print(_motor_1.CurrentThrottle);
+	Serial.print(" | Motor Y+ :"); Serial.println(_motor_4.CurrentThrottle);
 }

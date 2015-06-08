@@ -24,8 +24,8 @@ float Angle[2];
 
 Gyro::Gyro()
 {
-	this->GetXAngle = Angle[0];
-	this->GetYAngle = Angle[1];
+	this->GetYAngle = Angle[0];
+	this->GetXAngle = Angle[1];
 }
 
 
@@ -50,8 +50,8 @@ void Gyro::Actualizar()
 	//Aplicar el Filtro Complementario
 	Angle[0] = 0.98 *(Angle[0] + Gy[0] * 0.010) + 0.02*Acc[0];
 	Angle[1] = 0.98 *(Angle[1] + Gy[1] * 0.010) + 0.02*Acc[1];
-	this->GetXAngle = (int) Angle[0];
-	this->GetYAngle = (int) Angle[1];
+	this->GetYAngle = (int) Angle[0];
+	this->GetXAngle = (int) Angle[1];
 }
 
 void Gyro::_GetAccelerometerData()
