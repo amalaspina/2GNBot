@@ -52,6 +52,8 @@ void loop()
 
 void Estabilizar(int _GyroX, int _GyroY)
 {
+	double ax = 0;
+	double ay = 0;
 	/*
 	_motor_1(9)		--> Y -
 	_motor_2(10)	--> X -
@@ -60,18 +62,22 @@ void Estabilizar(int _GyroX, int _GyroY)
 	*/
 	if (_GyroX < 0)
 	{
+
 		/* Inclinacion negativa en el Eje X */
+
+		ay = 1 - (_GyroX / 100);
 
 		/* Verifico velocidad actual en el motor X - */
 		if ((_motor_2.CurrentThrottle == _motor_2.MaximumThrottle)) 
 		{
 			// Motor X - esta a maxima velocidad
 			// descacelero motor X+ para compensar
+			
 			_motor_3.Acelera(_GyroX);
 		}
 		else
 		{
-			// Motor X - NO esta a maxima velocidad
+			// Motor X - NO esta a maxima velocidadx=
 			// Acelero motor X- para compensar
 			_motor_2.Acelera(_GyroX * -1);
 		}

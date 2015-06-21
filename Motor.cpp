@@ -12,7 +12,7 @@ Motor::Motor(int pin)
 	this->AttachedPin = _pin;
 	this->CurrentThrottle = 0;
 	this->MaximumThrottle = 254;
-	this->MinimumThrottle = 50;
+	this->MinimumThrottle = 110;
 	this->IsMotorRunning = false;
 
 	
