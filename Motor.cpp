@@ -1,12 +1,10 @@
 #include "Motor.h"
 
-
 // Variables Globales
 
-
+// Contructor de la clase Motor
 Motor::Motor(int pin)
 {
-	// Contructor de la clase Motor
 	pinMode(pin, OUTPUT);
 	_pin = pin;
 	this->AttachedPin = _pin;
@@ -14,56 +12,27 @@ Motor::Motor(int pin)
 	this->MaximumThrottle = 254;
 	this->MinimumThrottle = 110;
 	this->IsMotorRunning = false;
-
-	
 }
 
 Motor::~Motor()
 {
 }
 
-
 void Motor::Iniciar()
 {
-
 }
 
 
-void Motor::Acelera(int v)
+void Motor::Acelera(int v)//0 a 100%
 {
 	_throttle_motor(v);
 }
 
-void Motor::_throttle_motor(int valor)
+void Motor::_throttle_motor(int speedPercent)//0 a 100%
 {
-	int _throttle_value = valor;
-	int _current_throttle = this->CurrentThrottle;
-	int _new_throttle = 0;
-	if (_throttle_value != 0)
-	{
-		// Se movio el joystick, hay que acelerar o desacelerar
-		_new_throttle = _current_throttle + _throttle_value;
-
-		if ((_new_throttle >= this->MinimumThrottle) && (_new_throttle <= this->MaximumThrottle))
-		{
-			analogWrite(this->AttachedPin, _new_throttle);
-			this->CurrentThrottle = _new_throttle;
-		}
-	}
-	else
-	{
-		if (this->CurrentThrottle == 0)
-		{
-			_new_throttle = this->MinimumThrottle;
-		}
-		else
-		{
-			_new_throttle = this->CurrentThrottle;
-		}
-
-		analogWrite(this->AttachedPin, _new_throttle);
-		this->CurrentThrottle = _new_throttle;
-	}
+	int gap=this->MinimunThrottle-this->MaximunThrottle;
+	this->CurrentThrottle=gap*(speedPercent/100);
+	analogWrite(this->AttachedPin, this->CurrentThrottle);
 }
 
 void Motor::_init_motor_spinning()
