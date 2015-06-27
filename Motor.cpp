@@ -30,8 +30,8 @@ void Motor::Acelera(int v)//0 a 100%
 
 void Motor::_throttle_motor(int speedPercent)//0 a 100%
 {
-	int gap=this->MinimunThrottle-this->MaximunThrottle;
-	this->CurrentThrottle=gap*(speedPercent/100);
+	int gap=this->MaximunThrottle-this->MinimunThrottle;
+	this->CurrentThrottle=(gap*(speedPercent/100))+this->MinimunThrottle;
 	analogWrite(this->AttachedPin, this->CurrentThrottle);
 }
 
